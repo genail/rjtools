@@ -8,6 +8,36 @@ require 'ftools'
 
 module RJ
 
+    class Args
+        def self.contains?(key)
+            return ARGV.index(key_to_opt(key)) != nil
+        end
+    
+        def self.value_of(key)
+            index = ARGV.index(key_to_opt(key))
+            
+            if index.nil?
+                return nil
+            end
+            
+            return ARGV[index + 1]
+        end
+        
+        private
+        
+        def self.key_to_opt(key)
+            prefix = nil
+        
+            if key.size == 1
+                prefix = '-'
+            elsif key.size > 1
+                prefix = '--'
+            end
+            
+            return prefix + key
+        end
+    end
+
     class Temp
         def self.directory
             Dir.mktmpdir()
@@ -139,3 +169,7 @@ end
 #
 #RJ::Zip.unpackAll('/tmp/c/plik.zip', '/tmp/c/a')
 #RJ::Zip.pack('/tmp/c/a', '/tmp/c/plik2.zip')
+
+#puts "found -a" if RJ::Args.contains? 'a'
+#puts "found --long" if RJ::Args.contains? 'long'
+#puts "long value: #{RJ::Args.value_of('long')}"
