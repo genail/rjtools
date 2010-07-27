@@ -87,6 +87,14 @@ module RJ
             yield path
             
             Zip.insert(zipFile, path, zipEntry)
+            File.unlink path
+        end
+        
+        def self.create(zipFile, zipEntry)
+            path = Temp.file()
+            yield path
+            Zip.insert(zipFile, path, zipEntry)
+            File.unlink path
         end
         
         def self.pack(source, zipFile)
