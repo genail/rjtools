@@ -91,7 +91,7 @@ module RJ
         end
         
         def self.create(zipFile, zipEntry)
-            path = Temp.file()
+            path = Temp.file().path
             yield path
             Zip.insert(zipFile, path, zipEntry)
             File.unlink path
