@@ -119,7 +119,7 @@ module RJ
         def self.insert(zipFile, source, zipEntry)
             ::Zip::ZipFile.open(zipFile) do |file|
                 if file.find_entry(zipEntry).nil?
-                    file.insert(zipEntry, source)
+                    file.add(zipEntry, source)
                 else
                     file.replace(zipEntry, source)
                 end
