@@ -12,6 +12,15 @@ module RJ
         def self.contains?(key)
             return ARGV.index(key_to_opt(key)) != nil
         end
+        
+        def self.require(key)
+            if not contains? key
+                puts "missing argument #{key_to_opt(key)}"
+                exit 1
+            end
+            
+            return value_of(key)
+        end
     
         def self.value_of(key)
             index = ARGV.index(key_to_opt(key))
