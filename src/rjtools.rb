@@ -5,6 +5,7 @@ require 'tmpdir'
 require 'rubygems'
 require 'zip/zip'
 require 'ftools'
+require 'net/http'
 
 module RJ
 
@@ -171,6 +172,22 @@ module RJ
                 File.move(destination, source)
             end
         end
+    end
+    
+    class Tomcat
+        def initialize(addr, user, pass)
+            @addr = addr
+            @user = user
+            @pass = pass
+        end
+        
+        def reload(appname)
+            index = @addr.rindex('http://') + 'http://'.size - 1
+            uri = @addr[0..index] + @user + ":" + @pass + "@" + @addr[index+1..-1] + "/manager/html/reload"
+        
+            Net::HTTP.post_form(URI.parse(uri), {'path' => "/#{appname}"})
+        end
+        
     end
 end
 
